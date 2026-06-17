@@ -1,0 +1,26 @@
+{
+  "name": "crypto-project",
+  "version": "0.1.0",
+  "description": "A small, strict, functional crypto market data CLI built with Bun, TypeScript, Effect, and Effect CLI.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun run src/main.ts",
+    "crypto": "bun run src/main.ts",
+    "check": "tsc --noEmit",
+    "test": "bun test",
+    "lint": "biome check .",
+    "format": "biome format --write ."
+  },
+  "dependencies": {
+    "@effect/cli": "latest",
+    "@effect/platform": "latest",
+    "@effect/platform-bun": "latest",
+    "effect": "latest"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "latest",
+    "@types/bun": "latest",
+    "typescript": "latest"
+  }
+}
