@@ -3,14 +3,14 @@ import { BunContext, BunRuntime } from "@effect/platform-bun"
 import { Console, Effect, Layer } from "effect"
 import { renderUnknownError } from "./app/errors"
 import { command } from "./cli/command"
-import { StubMarketDataProviderLive } from "./providers/stub"
+import { MarketDataProviderRegistryLive } from "./providers/live"
 
 const cli = Command.run(command, {
   name: "Crypto Fetcher",
-  version: "0.1.0"
+  version: "0.2.0"
 })
 
-const MainLayer = Layer.mergeAll(BunContext.layer, StubMarketDataProviderLive)
+const MainLayer = Layer.mergeAll(BunContext.layer, MarketDataProviderRegistryLive)
 
 const main = cli(process.argv).pipe(
   Effect.catchAll((error) =>

@@ -1,8 +1,8 @@
-import { Effect, Layer } from "effect"
+import { Effect } from "effect"
 import { ProviderError } from "../app/errors"
 import { showCoinId, type CoinId } from "../domain/coin"
 import type { CoinMarketData, MarketQuery } from "../domain/market-data"
-import { MarketDataProvider } from "./provider"
+import type { MarketDataProvider } from "./provider"
 
 const fixedUpdatedAt = new Date("2026-01-01T00:00:00.000Z")
 
@@ -76,6 +76,6 @@ const getMarkets = (
   return Effect.succeed(query.coinIds.map(toMarketData))
 }
 
-export const StubMarketDataProviderLive = Layer.succeed(MarketDataProvider, {
+export const StubMarketDataProvider: MarketDataProvider = {
   getMarkets
-})
+}

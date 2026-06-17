@@ -8,6 +8,8 @@ const coinIdPattern = /^[a-z0-9][a-z0-9-]*$/u
 
 export const normalizeCoinText = (input: string): string => input.trim().toLowerCase()
 
+export const unsafeCoinId = (input: string): CoinId => brand<string, "CoinId">(input)
+
 export const makeCoinId = (input: string): Effect.Effect<CoinId, ValidationError> => {
   const normalized = normalizeCoinText(input)
 
@@ -24,12 +26,12 @@ export const makeCoinId = (input: string): Effect.Effect<CoinId, ValidationError
     return Effect.fail(
       new ValidationError({
         input,
-        message: "use canonical coin IDs like bitcoin, ethereum, or solana"
+        message: "use canonical CoinGecko coin IDs like bitcoin, ethereum, or solana"
       })
     )
   }
 
-  return Effect.succeed(brand<string, "CoinId">(normalized))
+  return Effect.succeed(unsafeCoinId(normalized))
 }
 
 export const makeCoinIds = (

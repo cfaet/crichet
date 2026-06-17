@@ -1,14 +1,13 @@
 import { Args, Command, Options } from "@effect/cli"
 import { runProgram } from "../app/program"
 import { supportedCurrencies } from "../domain/currency"
-import type { MarketProviderName, OutputFormat } from "../domain/market-data"
+import { supportedMarketProviders, type OutputFormat } from "../domain/market-data"
 
 const supportedOutputs = ["table", "json"] as const satisfies ReadonlyArray<OutputFormat>
-const supportedProviders = ["stub"] as const satisfies ReadonlyArray<MarketProviderName>
 
 const coins = Args.text({ name: "coin" }).pipe(
   Args.atLeast(1),
-  Args.withDescription("Canonical coin IDs, for example: bitcoin ethereum solana")
+  Args.withDescription("Canonical CoinGecko coin IDs, for example: bitcoin ethereum solana")
 )
 
 const vsCurrency = Options.choice("vs", supportedCurrencies).pipe(
@@ -22,9 +21,9 @@ const output = Options.choice("output", supportedOutputs).pipe(
   Options.withDefault("table")
 )
 
-const provider = Options.choice("provider", supportedProviders).pipe(
+const provider = Options.choice("provider", supportedMarketProviders).pipe(
   Options.withDescription("Market data provider"),
-  Options.withDefault("stub")
+  Options.withDefault("coingecko")
 )
 
 export const command = Command.make(

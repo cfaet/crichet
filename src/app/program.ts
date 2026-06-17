@@ -1,9 +1,9 @@
 import { Console, Effect } from "effect"
-import { makeCoinIds } from "../domain/coin"
-import type { CoinMarketData, OutputFormat, MarketProviderName, MarketQuery } from "../domain/market-data"
-import type { VsCurrency } from "../domain/currency"
 import { renderJson, renderTable } from "../cli/render"
-import { MarketDataProvider } from "../providers/provider"
+import { makeCoinIds } from "../domain/coin"
+import type { VsCurrency } from "../domain/currency"
+import type { CoinMarketData, MarketProviderName, MarketQuery, OutputFormat } from "../domain/market-data"
+import { MarketDataProviderRegistry } from "../providers/provider"
 
 type RunConfig = {
   readonly coins: ReadonlyArray<string>
@@ -23,7 +23,7 @@ const renderOutput = (config: RunConfig, marketData: ReadonlyArray<CoinMarketDat
 
 export const runProgram = (config: RunConfig) =>
   Effect.gen(function* () {
-    const provider = yield* MarketDataProvider
+    const providers = yield* MarketDataProviderRegistry
     const coinIds = yield* makeCoinIds(config.coins)
 
     const query: MarketQuery = {
@@ -31,7 +31,7 @@ export const runProgram = (config: RunConfig) =>
       vsCurrency: config.vsCurrency
     }
 
-    const marketData = yield* provider.getMarkets(query)
+    const marketData = yield* providers.getMarkets(config.provider, query)
     const output = renderOutput(config, marketData)
 
     yield* Console.log(output)
